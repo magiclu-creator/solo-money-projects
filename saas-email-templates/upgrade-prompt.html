@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#0f172a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0f172a;padding:40px 20px;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="background:#1e293b;border-radius:12px;border:1px solid #334155;overflow:hidden;">
+        <tr><td style="padding:24px 32px;border-bottom:1px solid #334155;text-align:center;">
+          <span style="font-size:24px;font-weight:800;color:#818cf8;">🔗 LinkForge</span>
+        </td></tr>
+        <tr><td style="padding:40px 32px;">
+          <h1 style="color:#e2e8f0;font-size:24px;font-weight:800;margin:0 0 16px;">Upgrade to Pro ⭐</h1>
+          <p style="color:#94a3b8;font-size:16px;line-height:1.6;margin:0 0 24px;">Hi {{name}},</p>
+          <p style="color:#94a3b8;font-size:16px;line-height:1.6;margin:0 0 24px;">You've used <strong style="color:#e2e8f0;">{{usage_count}}/{{usage_limit}}</strong> of your free links this month. You're getting great value from LinkForge!</p>
+          
+          <!-- Progress bar -->
+          <div style="background:#0f172a;border:1px solid #334155;border-radius:8px;padding:16px;margin-bottom:24px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+              <span style="color:#94a3b8;font-size:13px;">Monthly Usage</span>
+              <span style="color:#e2e8f0;font-size:13px;font-weight:600;">{{usage_percent}}%</span>
+            </div>
+            <div style="background:#334155;border-radius:4px;height:8px;overflow:hidden;">
+              <div style="background:linear-gradient(90deg,#6366f1,#a78bfa);width:{{usage_percent}}%;height:100%;border-radius:4px;"></div>
+            </div>
+          </div>
+
+          <h2 style="color:#e2e8f0;font-size:18px;margin:0 0 16px;">Pro Plan includes:</h2>
+          <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+            <tr><td style="padding:6px 0;color:#94a3b8;font-size:14px;">✅ 5,000 links/month (50x more)</td></tr>
+            <tr><td style="padding:6px 0;color:#94a3b8;font-size:14px;">✅ Detailed analytics & geography</td></tr>
+            <tr><td style="padding:6px 0;color:#94a3b8;font-size:14px;">✅ Custom short codes</td></tr>
+            <tr><td style="padding:6px 0;color:#94a3b8;font-size:14px;">✅ HD QR codes with logo</td></tr>
+            <tr><td style="padding:6px 0;color:#94a3b8;font-size:14px;">✅ Priority support</td></tr>
+          </table>
+
+          <table cellpadding="0" cellspacing="0" style="margin:0 auto 16px;">
+            <tr><td style="background:#6366f1;border-radius:8px;padding:14px 32px;">
+              <a href="{{upgrade_url}}" style="color:#fff;font-size:16px;font-weight:600;text-decoration:none;">Upgrade to Pro — ¥29/mo →</a>
+            </td></tr>
+          </table>
+          <p style="color:#64748b;font-size:13px;text-align:center;margin:0;">7-day money-back guarantee · Cancel anytime</p>
+        </td></tr>
+        <tr><td style="padding:24px 32px;border-top:1px solid #334155;text-align:center;">
+          <p style="color:#64748b;font-size:12px;margin:0;">LinkForge · Upgrade Prompt</p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>
