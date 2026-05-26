@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#0f172a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0f172a;padding:40px 20px;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="background:#1e293b;border-radius:12px;border:1px solid #334155;overflow:hidden;">
+        <tr><td style="padding:24px 32px;border-bottom:1px solid #334155;text-align:center;">
+          <span style="font-size:24px;font-weight:800;color:#818cf8;">🔗 LinkForge</span>
+        </td></tr>
+        <tr><td style="padding:40px 32px;">
+          <h1 style="color:#e2e8f0;font-size:24px;font-weight:800;margin:0 0 16px;">Your Weekly Report 📊</h1>
+          <p style="color:#94a3b8;font-size:16px;line-height:1.6;margin:0 0 24px;">Hi {{name}}, here's how your links performed this week:</p>
+          
+          <!-- Stats Grid -->
+          <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+            <tr>
+              <td width="50%" style="padding:8px;">
+                <div style="background:#0f172a;border:1px solid #334155;border-radius:8px;padding:16px;text-align:center;">
+                  <div style="color:#818cf8;font-size:28px;font-weight:800;">{{total_clicks}}</div>
+                  <div style="color:#64748b;font-size:12px;margin-top:4px;">Total Clicks</div>
+                  <div style="color:#22c55e;font-size:11px;margin-top:4px;">↑ {{click_change}}% vs last week</div>
+                </div>
+              </td>
+              <td width="50%" style="padding:8px;">
+                <div style="background:#0f172a;border:1px solid #334155;border-radius:8px;padding:16px;text-align:center;">
+                  <div style="color:#818cf8;font-size:28px;font-weight:800;">{{new_links}}</div>
+                  <div style="color:#64748b;font-size:12px;margin-top:4px;">New Links</div>
+                  <div style="color:#22c55e;font-size:11px;margin-top:4px;">This week</div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td width="50%" style="padding:8px;">
+                <div style="background:#0f172a;border:1px solid #334155;border-radius:8px;padding:16px;text-align:center;">
+                  <div style="color:#a78bfa;font-size:28px;font-weight:800;">{{top_country}}</div>
+                  <div style="color:#64748b;font-size:12px;margin-top:4px;">Top Country</div>
+                </div>
+              </td>
+              <td width="50%" style="padding:8px;">
+                <div style="background:#0f172a;border:1px solid #334155;border-radius:8px;padding:16px;text-align:center;">
+                  <div style="color:#a78bfa;font-size:28px;font-weight:800;">{{top_device}}</div>
+                  <div style="color:#64748b;font-size:12px;margin-top:4px;">Top Device</div>
+                </div>
+              </td>
+            </tr>
+          </table>
+
+          <h2 style="color:#e2e8f0;font-size:18px;margin:0 0 12px;">🏆 Top Performing Links</h2>
+          <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+            <tr style="background:#0f172a;">
+              <td style="padding:8px 12px;color:#64748b;font-size:12px;border-bottom:1px solid #334155;">Link</td>
+              <td style="padding:8px 12px;color:#64748b;font-size:12px;border-bottom:1px solid #334155;text-align:right;">Clicks</td>
+            </tr>
+            {{#each top_links}}
+            <tr>
+              <td style="padding:8px 12px;color:#e2e8f0;font-size:13px;border-bottom:1px solid #1e293b;">{{this.title}}</td>
+              <td style="padding:8px 12px;color:#818cf8;font-size:13px;text-align:right;border-bottom:1px solid #1e293b;font-weight:600;">{{this.clicks}}</td>
+            </tr>
+            {{/each}}
+          </table>
+
+          <table cellpadding="0" cellspacing="0" style="margin:0 auto 24px;">
+            <tr><td style="background:#6366f1;border-radius:8px;padding:12px 24px;">
+              <a href="{{dashboard_url}}" style="color:#fff;font-size:14px;font-weight:600;text-decoration:none;">View Full Report →</a>
+            </td></tr>
+          </table>
+        </td></tr>
+        <tr><td style="padding:24px 32px;border-top:1px solid #334155;text-align:center;">
+          <p style="color:#64748b;font-size:12px;margin:0;">LinkForge · Weekly Report</p>
+          <p style="color:#475569;font-size:11px;margin:8px 0 0;">
+            <a href="{{unsubscribe_url}}" style="color:#6366f1;text-decoration:none;">Unsubscribe</a>
+          </p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>
