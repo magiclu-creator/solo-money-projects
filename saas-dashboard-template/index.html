@@ -1,0 +1,320 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - SaaS Admin Template</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --sidebar-w: 240px;
+      --header-h: 60px;
+      --bg: #0f1117; --bg-surface: #1a1d27; --bg-card: #222533; --bg-hover: #2a2d3d;
+      --border: #2e3247; --text: #e4e4e7; --text-muted: #8b8fa3; --text-dim: #5a5e72;
+      --primary: #6366f1; --primary-light: #818cf8; --accent: #a78bfa;
+      --success: #22c55e; --warn: #eab308; --error: #ef4444; --info: #3b82f6;
+    }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
+
+    /* Sidebar */
+    .sidebar { width: var(--sidebar-w); background: var(--bg-surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; position: fixed; top: 0; bottom: 0; z-index: 100; transition: transform 0.3s; }
+    .sidebar-brand { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 0.75rem; }
+    .sidebar-brand .icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.9rem; }
+    .sidebar-brand .name { font-weight: 700; font-size: 1.1rem; }
+    
+    .sidebar-nav { flex: 1; padding: 1rem 0.75rem; overflow-y: auto; }
+    .nav-section { margin-bottom: 1.5rem; }
+    .nav-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); padding: 0 0.75rem; margin-bottom: 0.5rem; }
+    .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.75rem; border-radius: 8px; color: var(--text-muted); font-size: 0.9rem; cursor: pointer; transition: all 0.15s; text-decoration: none; }
+    .nav-item:hover { background: var(--bg-hover); color: var(--text); }
+    .nav-item.active { background: rgba(99,102,241,0.12); color: var(--primary-light); font-weight: 600; }
+    .nav-item .badge { margin-left: auto; background: var(--primary); color: white; font-size: 0.65rem; padding: 0.15rem 0.5rem; border-radius: 10px; font-weight: 600; }
+    
+    .sidebar-footer { padding: 1rem; border-top: 1px solid var(--border); }
+    .user-info { display: flex; align-items: center; gap: 0.75rem; }
+    .user-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; }
+    .user-name { font-size: 0.85rem; font-weight: 600; }
+    .user-plan { font-size: 0.75rem; color: var(--text-dim); }
+
+    /* Main content */
+    .main { flex: 1; margin-left: var(--sidebar-w); }
+    
+    /* Header */
+    .header { height: var(--header-h); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; background: var(--bg-surface); position: sticky; top: 0; z-index: 50; }
+    .header-left { display: flex; align-items: center; gap: 1rem; }
+    .header-left h1 { font-size: 1.2rem; font-weight: 700; }
+    .header-right { display: flex; align-items: center; gap: 1rem; }
+    .search-input { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.75rem; color: var(--text); font-size: 0.85rem; width: 240px; outline: none; }
+    .search-input:focus { border-color: var(--primary); }
+    .search-input::placeholder { color: var(--text-dim); }
+    .icon-btn { width: 36px; height: 36px; border-radius: 8px; background: var(--bg-card); border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; position: relative; }
+    .icon-btn:hover { border-color: var(--primary); color: var(--text); }
+    .icon-btn .dot { position: absolute; top: 6px; right: 6px; width: 6px; height: 6px; background: var(--error); border-radius: 50%; }
+
+    /* Content */
+    .content { padding: 2rem; }
+    
+    /* Stats grid */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; }
+    .stat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+    .stat-label { font-size: 0.8rem; color: var(--text-muted); }
+    .stat-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+    .stat-icon.blue { background: rgba(59,130,246,0.12); }
+    .stat-icon.green { background: rgba(34,197,94,0.12); }
+    .stat-icon.purple { background: rgba(168,85,247,0.12); }
+    .stat-icon.orange { background: rgba(249,115,22,0.12); }
+    .stat-value { font-size: 1.8rem; font-weight: 800; }
+    .stat-change { font-size: 0.8rem; margin-top: 0.25rem; }
+    .stat-change.up { color: var(--success); }
+    .stat-change.down { color: var(--error); }
+
+    /* Chart area */
+    .charts-row { display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; margin-bottom: 2rem; }
+    .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
+    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
+    .card-title { font-size: 1rem; font-weight: 700; }
+    .card-action { font-size: 0.8rem; color: var(--primary-light); cursor: pointer; text-decoration: none; }
+    
+    /* Placeholder chart */
+    .chart-placeholder { height: 200px; display: flex; align-items: flex-end; gap: 8px; padding: 0 0.5rem; }
+    .chart-bar { flex: 1; border-radius: 4px 4px 0 0; transition: height 0.5s; min-height: 8px; }
+    .chart-bar.c1 { background: var(--primary); }
+    .chart-bar.c2 { background: var(--accent); opacity: 0.6; }
+    
+    /* Donut placeholder */
+    .donut-placeholder { width: 160px; height: 160px; margin: 1rem auto; position: relative; }
+    .donut-placeholder svg { transform: rotate(-90deg); }
+    .donut-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+    .donut-center .val { font-size: 1.8rem; font-weight: 800; }
+    .donut-center .lbl { font-size: 0.75rem; color: var(--text-muted); }
+    .donut-legend { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; margin-top: 1rem; }
+    .legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: var(--text-muted); }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    /* Table */
+    .table-card { margin-bottom: 2rem; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+    th { color: var(--text-muted); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    tr:hover { background: var(--bg-hover); }
+    tr:last-child td { border-bottom: none; }
+    .status { padding: 0.2rem 0.6rem; border-radius: 50px; font-size: 0.75rem; font-weight: 600; }
+    .status.active { background: rgba(34,197,94,0.12); color: var(--success); }
+    .status.pending { background: rgba(234,179,8,0.12); color: var(--warn); }
+    .status.inactive { background: rgba(239,68,68,0.12); color: var(--error); }
+
+    /* Responsive */
+    .sidebar-toggle { display: none; background: none; border: none; color: var(--text); font-size: 1.3rem; cursor: pointer; }
+    
+    @media (max-width: 1024px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .charts-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; }
+      .sidebar-toggle { display: block; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .header { padding: 0 1rem; }
+      .search-input { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="icon">⚡</div>
+      <div class="name">LaunchWave</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-label">Overview</div>
+        <a class="nav-item active" href="#">📊 Dashboard</a>
+        <a class="nav-item" href="#">📈 Analytics</a>
+        <a class="nav-item" href="#">👥 Users <span class="badge">12</span></a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Revenue</div>
+        <a class="nav-item" href="#">💳 Subscriptions</a>
+        <a class="nav-item" href="#">🧾 Invoices</a>
+        <a class="nav-item" href="#">💰 Revenue</a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Product</div>
+        <a class="nav-item" href="#">🔗 Links</a>
+        <a class="nav-item" href="#">📱 QR Codes</a>
+        <a class="nav-item" href="#">🌐 Domains</a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Settings</div>
+        <a class="nav-item" href="#">⚙️ General</a>
+        <a class="nav-item" href="#">🔌 Integrations</a>
+        <a class="nav-item" href="#">🔑 API Keys</a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar">JD</div>
+        <div>
+          <div class="user-name">John Doe</div>
+          <div class="user-plan">Pro Plan</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <header class="header">
+      <div class="header-left">
+        <button class="sidebar-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+        <h1>Dashboard</h1>
+      </div>
+      <div class="header-right">
+        <input type="text" class="search-input" placeholder="Search..." />
+        <button class="icon-btn">🔔<span class="dot"></span></button>
+        <button class="icon-btn">⚙️</button>
+      </div>
+    </header>
+
+    <div class="content">
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-label">Total Revenue</span>
+            <div class="stat-icon blue">💰</div>
+          </div>
+          <div class="stat-value">¥128,430</div>
+          <div class="stat-change up">↑ 12.5% vs last month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-label">Active Users</span>
+            <div class="stat-icon green">👥</div>
+          </div>
+          <div class="stat-value">2,847</div>
+          <div class="stat-change up">↑ 8.2% vs last month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-label">Links Created</span>
+            <div class="stat-icon purple">🔗</div>
+          </div>
+          <div class="stat-value">45,231</div>
+          <div class="stat-change up">↑ 23.1% vs last month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-label">Conversion Rate</span>
+            <div class="stat-icon orange">📈</div>
+          </div>
+          <div class="stat-value">3.24%</div>
+          <div class="stat-change down">↓ 0.4% vs last month</div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="charts-row">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Revenue Overview</div>
+            <span class="card-action">View Details →</span>
+          </div>
+          <div class="chart-placeholder">
+            <div class="chart-bar c1" style="height:40%"></div>
+            <div class="chart-bar c1" style="height:55%"></div>
+            <div class="chart-bar c1" style="height:45%"></div>
+            <div class="chart-bar c1" style="height:70%"></div>
+            <div class="chart-bar c1" style="height:60%"></div>
+            <div class="chart-bar c1" style="height:85%"></div>
+            <div class="chart-bar c1" style="height:75%"></div>
+            <div class="chart-bar c1" style="height:90%"></div>
+            <div class="chart-bar c1" style="height:65%"></div>
+            <div class="chart-bar c1" style="height:80%"></div>
+            <div class="chart-bar c1" style="height:95%"></div>
+            <div class="chart-bar c1" style="height:100%"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Traffic Sources</div>
+          </div>
+          <div class="donut-placeholder">
+            <svg viewBox="0 0 120 120" width="160" height="160">
+              <circle cx="60" cy="60" r="50" fill="none" stroke="#2e3247" stroke-width="14"/>
+              <circle cx="60" cy="60" r="50" fill="none" stroke="#6366f1" stroke-width="14" stroke-dasharray="125 314" stroke-linecap="round"/>
+              <circle cx="60" cy="60" r="50" fill="none" stroke="#a78bfa" stroke-width="14" stroke-dasharray="80 314" stroke-dashoffset="-125" stroke-linecap="round"/>
+              <circle cx="60" cy="60" r="50" fill="none" stroke="#22c55e" stroke-width="14" stroke-dasharray="60 314" stroke-dashoffset="-205" stroke-linecap="round"/>
+            </svg>
+            <div class="donut-center"><div class="val">12.4K</div><div class="lbl">visitors</div></div>
+          </div>
+          <div class="donut-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#6366f1"></div> Direct 40%</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#a78bfa"></div> Search 25%</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div> Social 19%</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#2e3247"></div> Other 16%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity Table -->
+      <div class="card table-card">
+        <div class="card-header">
+          <div class="card-title">Recent Users</div>
+          <span class="card-action">View All →</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Email</th>
+              <th>Plan</th>
+              <th>Status</th>
+              <th>Links</th>
+              <th>Joined</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:600">Alice Chen</td>
+              <td style="color:var(--text-muted)">alice@example.com</td>
+              <td>Pro</td>
+              <td><span class="status active">Active</span></td>
+              <td>1,234</td>
+              <td style="color:var(--text-dim)">2 days ago</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600">Bob Wilson</td>
+              <td style="color:var(--text-muted)">bob@example.com</td>
+              <td>Business</td>
+              <td><span class="status active">Active</span></td>
+              <td>5,678</td>
+              <td style="color:var(--text-dim)">5 days ago</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600">Carol Zhang</td>
+              <td style="color:var(--text-muted)">carol@example.com</td>
+              <td>Free</td>
+              <td><span class="status pending">Pending</span></td>
+              <td>89</td>
+              <td style="color:var(--text-dim)">1 week ago</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600">Dave Kumar</td>
+              <td style="color:var(--text-muted)">dave@example.com</td>
+              <td>Pro</td>
+              <td><span class="status inactive">Inactive</span></td>
+              <td>456</td>
+              <td style="color:var(--text-dim)">2 weeks ago</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
